@@ -120,7 +120,122 @@ body {
 .footer-links a:hover {
   color: #1f2937;
 }
+/* Hero Text Section */
+.hero-content {
+  max-width: 650px;
+  color: #3b82f6;
+  z-index: 2;
+}
 
+/* Small Top Text */
+.eyebrow {
+  display: inline-block;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #60a5fa;
+  margin-bottom: 15px;
+  padding: 6px 14px;
+  border: 1px solid rgba(96, 165, 250, 0.4);
+  border-radius: 30px;
+  background: rgba(96, 165, 250, 0.08);
+  backdrop-filter: blur(8px);
+}
+
+/* Main Heading */
+.hero-content h1 {
+  font-size: 64px;
+  line-height: 1.1;
+  font-weight: 800;
+  margin-bottom: 20px;
+ color: #3b82f6;
+}
+
+/* Description */
+.hero-copy {
+  font-size: 18px;
+  line-height: 1.8;
+  color: #192f50;
+  margin-bottom: 20px;
+  max-width: 580px;
+}
+
+/* College Name */
+.hero-content p:nth-child(4) {
+  font-size: 15px;
+  color: #2a4c88;
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+/* Guide Name */
+.hero-content p:nth-child(5) {
+  font-size: 15px;
+  color: #9ca3af;
+  margin-bottom: 30px;
+  font-weight: 500;
+}
+
+/* Button */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 15px 34px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #2563eb, #3b82f6);
+  color: white;
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: 600;
+  transition: all 0.35s ease;
+  box-shadow: 0 10px 30px rgba(37, 99, 235, 0.35);
+}
+
+/* Hover Effect */
+.btn-primary:hover {
+  transform: translateY(-4px) scale(1.03);
+  box-shadow: 0 15px 35px rgba(37, 99, 235, 0.5);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .hero-content {
+    text-align: center;
+    max-width: 100%;
+    padding: 0 20px;
+  }
+
+  .hero-content h1 {
+    font-size: 42px;
+  }
+
+  .hero-copy {
+    font-size: 16px;
+  }
+
+  .btn-primary {
+    width: 100%;
+    max-width: 280px;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-content h1 {
+    font-size: 34px;
+  }
+
+  .eyebrow {
+    font-size: 12px;
+    letter-spacing: 1px;
+  }
+
+  .hero-copy {
+    font-size: 15px;
+    line-height: 1.6;
+  }
+}
 .hero {
   position: relative;
   overflow: hidden;
