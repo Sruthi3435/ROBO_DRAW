@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # 🎨 RoboDraw - Complete Image to CNC Automation
 
 > **Turn Your Images into CNC Drawings** with an automated 6-step workflow and celebration popup!
@@ -328,3 +329,6 @@ Built with:
 Start with: `node test-celebration.js` 🎉
 
 For more help, read [QUICKSTART.md](QUICKSTART.md)
+=======
+# ROBO_DRAW
+>>>>>>> d561304560458c76723f364de1b0211eb7eb987a
