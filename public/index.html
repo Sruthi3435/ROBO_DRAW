@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RoboDraw | Turn Your Images into CNC Drawings</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="page-shell">
+    <header class="topbar">
+      <div class="brand">
+        <div class="logo-mark" aria-hidden="true">
+          <div class="robot-head"></div>
+          <div class="paint-splash"></div>
+        </div>
+        <span>RoboDraw</span>
+      </div>
+      <nav class="nav-links">
+        <a href="#how-it-works">How it Works</a>
+        <a href="#features">Features</a>
+        <a href="#upload">Upload</a>
+        
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero" id="home">
+        <div class="hero-bg"></div>
+        <div class="hero-content reveal-up">
+          <div class="hero-panel">
+            <div class="hero-logo floating">
+              <div class="robot-icon"></div>
+              <div class="splash"></div>
+            </div>
+            <div>
+              <p class="eyebrow">CNC-ready design automation</p>
+              <h1>Turn Your Images into CNC Drawings</h1>
+              <p class="hero-copy">Upload → Convert → Draw Automatically with a premium, modern process built for makers and fabricators.</p>
+              <a class="btn btn-primary" href="#samples">Upload Image</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section sample-section" id="samples">
+        <div class="section-header reveal-up">
+          <span class="section-label">Choose a Sample</span>
+          <h2>Select one sample image to draw</h2>
+        </div>
+        <div class="sample-grid reveal-up delay-1" id="sampleGrid"></div>
+      </section>
+
+      <section class="section how-it-works" id="how-it-works">
+        <div class="section-header reveal-up">
+          <span class="section-label">How It Works</span>
+          <h2>Three simple steps to CNC-ready output</h2>
+        </div>
+        <div class="cards-grid">
+          <article class="info-card reveal-up delay-1">
+            <span class="step">01</span>
+            <h3>Upload</h3>
+            <p>Drag and drop your image, or select from your device. We validate file type and size instantly.</p>
+          </article>
+          <article class="info-card reveal-up delay-2">
+            <span class="step">02</span>
+            <h3>Process</h3>
+            <p>Images are converted into CNC-friendly paths using Inkscape, jscut, and UGS workflow.</p>
+          </article>
+          <article class="info-card reveal-up delay-3">
+            <span class="step">03</span>
+            <h3>CNC Output</h3>
+            <p>Download your processed design and start machining with clean vector-ready output.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section features" id="features">
+        <div class="section-header reveal-up">
+          <span class="section-label">Features</span>
+          <h2>Fast. Accurate. Easy.</h2>
+        </div>
+        <div class="features-grid">
+          <div class="feature-card reveal-up delay-1">
+            <h3>Fast processing</h3>
+            <p>Instant feedback and rapid upload processing for a smooth experience.</p>
+          </div>
+          <div class="feature-card reveal-up delay-2">
+            <h3>Accurate output</h3>
+            <p>Preserve detail while converting images into clean CNC-ready toolpaths.</p>
+          </div>
+          <div class="feature-card reveal-up delay-3">
+            <h3>Easy workflow</h3>
+            <p>Modern UI and a guided upload system help you move from image to cut file quickly.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section upload-section" id="upload">
+        <div class="section-header reveal-up">
+          <span class="section-label">Upload</span>
+          <h2>Upload your artwork and preview instantly</h2>
+        </div>
+        <div class="upload-layout">
+          <div class="upload-panel reveal-up delay-1">
+            <form id="uploadForm" class="upload-box">
+              <div class="drop-area" id="dropArea">
+                <p>Drag & drop an image here</p>
+                <span>PNG, JPG, GIF, WEBP — max 2MB</span>
+              </div>
+              <input id="fileInput" type="file" name="image" accept="image/*" hidden />
+              <button type="button" class="btn btn-secondary" id="browseButton">Choose Image</button>
+            </form>
+            <div class="message" id="uploadMessage"></div>
+            <div class="message" id="busyMessage" style="display:none;"></div>
+          </div>
+
+          <div class="preview-card reveal-up delay-2">
+            <h3>Preview</h3>
+            <div class="preview-frame" id="previewFrame">
+              <p>No image selected yet.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer reveal-up">
+      <div>
+        <p>&copy; 2026 RoboDraw. Built for creators, fabricators, and CNC enthusiasts.</p>
+      </div>
+      <div class="footer-links">
+        <a href="#home">Home</a>
+        <a href="#how-it-works">Workflow</a>
+        <a href="#upload">Upload</a>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Celebration Popup -->
+  <div id="celebrationPopup" class="celebration-popup">
+    <div class="celebration-content">
+      <div class="confetti-container" id="confettiContainer"></div>
+      <div class="celebration-card">
+        <div class="celebration-emoji">🎉</div>
+        <h2>Congratulations!</h2>
+        <p class="celebration-message">Your drawing is complete!</p>
+        <p class="celebration-subtitle">Your artwork has been successfully converted and is ready to check out.</p>
+        <button class="btn btn-primary" id="closePopupBtn">Check It Out</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

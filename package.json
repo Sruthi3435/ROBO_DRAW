@@ -1,0 +1,16 @@
+{
+  "name": "robodraw",
+  "version": "1.0.0",
+  "description": "RoboDraw - image upload and CNC-ready design workflow",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.22.2",
+    "multer": "^1.4.4"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

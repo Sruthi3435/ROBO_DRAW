@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RoboDraw Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="page-shell">
+    <header class="topbar">
+      <div class="brand">
+        <div class="logo-mark" aria-hidden="true">
+          <div class="robot-head"></div>
+          <div class="paint-splash"></div>
+        </div>
+        <span>RoboDraw Admin</span>
+      </div>
+      <nav class="nav-links">
+        <a href="index.html">Home</a>
+      </nav>
+    </header>
+
+    <main class="section">
+      <div class="section-header reveal-up">
+        <span class="section-label">Admin Panel</span>
+        <h2>Uploaded Images</h2>
+        <p class="hero-copy">Use the admin key to list uploaded files and download them directly.</p>
+      </div>
+      <div class="upload-panel reveal-up delay-1">
+        <div class="upload-box">
+          <label for="adminKey">Admin key</label>
+          <input id="adminKey" type="password" placeholder="Enter admin key" />
+          <button id="loadFiles" class="btn btn-primary">Load Files</button>
+        </div>
+      </div>
+      <div class="preview-card reveal-up delay-2">
+        <h3>Uploads</h3>
+        <div id="fileList" class="preview-frame">
+          <p>Enter the admin key and load files.</p>
+        </div>
+      </div>
+    </main>
+  </div>
+  <script>
+    const loadFilesButton = document.getElementById('loadFiles');
+    const adminKeyInput = document.getElementById('adminKey');
+    const fileListContainer = document.getElementById('fileList');
+
+    function showFiles(files) {
+      if (!files.length) {
+        fileListContainer.innerHTML = '<p>No uploaded images found.</p>';
+        return;
+      }
+      const list = document.createElement('div');
+      list.style.display = 'grid';
+      list.style.gap = '14px';
+      files.forEach(file => {
+        const fileId = file.fileId || file.name.replace(/\.[^/.]+$/, '');
+        const row = document.createElement('div');
+        row.style.display = 'flex';
+        row.style.flexDirection = 'column';
+        row.style.gap = '12px';
+        row.style.padding = '20px';
+        row.style.border = '1px solid rgba(100, 116, 139, 0.18)';
+        row.style.borderRadius = '18px';
+        row.style.background = 'rgba(255,255,255,0.84)';
+
+        const header = document.createElement('div');
+        header.style.display = 'flex';
+        header.style.justifyContent = 'space-between';
+        header.style.alignItems = 'center';
+
+        const name = document.createElement('span');
+        name.textContent = file.name;
+        name.style.color = '#1f2937';
+        name.style.fontWeight = '600';
+
+        const link = document.createElement('a');
+        link.href = file.url;
+        link.textContent = 'Download';
+        link.style.color = '#4f46e5';
+        link.style.textDecoration = 'none';
+        link.target = '_blank';
+
+        header.append(name, link);
+
+        const statusSection = document.createElement('div');
+        statusSection.style.display = 'flex';
+        statusSection.style.flexDirection = 'column';
+        statusSection.style.gap = '8px';
+
+        const statusLabel = document.createElement('small');
+        statusLabel.textContent = 'Update Process Status:';
+        statusLabel.style.color = '#6b7280';
+        statusLabel.style.fontSize = '0.8rem';
+
+        const buttonContainer = document.createElement('div');
+        buttonContainer.style.display = 'flex';
+        buttonContainer.style.gap = '8px';
+        buttonContainer.style.flexWrap = 'wrap';
+
+        const steps = [
+          'Generate SVG',
+          'SVG Ready',
+          'G-code Generated',
+          'Running on Robot',
+          'Drawing Complete'
+        ];
+
+        function setButtonCompleted(button, completed) {
+          button.style.background = completed ? '#4f46e5' : '#f9fafb';
+          button.style.color = completed ? 'white' : '#374151';
+          button.style.borderColor = completed ? '#4f46e5' : '#d1d5db';
+          const label = button.getAttribute('data-label');
+          button.textContent = completed ? `✓ ${label}` : label;
+        }
+
+        function updateButtonStates(activeIndex) {
+          Array.from(buttonContainer.children).forEach((btn, idx) => {
+            setButtonCompleted(btn, idx <= activeIndex);
+          });
+        }
+
+        steps.forEach((stepText, index) => {
+          const button = document.createElement('button');
+          button.setAttribute('data-label', stepText);
+          button.textContent = stepText;
+          button.style.padding = '6px 12px';
+          button.style.border = '1px solid #d1d5db';
+          button.style.borderRadius = '6px';
+          button.style.background = '#f9fafb';
+          button.style.color = '#374151';
+          button.style.fontSize = '0.8rem';
+          button.style.cursor = 'pointer';
+          button.style.transition = 'all 0.2s';
+
+          button.addEventListener('mouseover', () => {
+            button.style.background = '#4f46e5';
+            button.style.color = 'white';
+          });
+
+          button.addEventListener('mouseout', () => {
+            const isCompleted = button.textContent.startsWith('✓ ');
+            button.style.background = isCompleted ? '#4f46e5' : '#f9fafb';
+            button.style.color = isCompleted ? 'white' : '#374151';
+          });
+
+          button.addEventListener('click', () => {
+            updateStatus(fileId, index + 2, stepText)
+              .then(() => {
+                updateButtonStates(index);
+              })
+              .catch(() => {
+                // Do not update UI on failure
+              });
+          });
+
+          buttonContainer.appendChild(button);
+        });
+
+        statusSection.append(statusLabel, buttonContainer);
+        row.append(header, statusSection);
+        list.appendChild(row);
+      });
+      fileListContainer.innerHTML = '';
+      fileListContainer.appendChild(list);
+    }
+
+    function updateStatus(fileId, step, message) {
+      return fetch('/admin/update-status', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-admin-key': document.getElementById('adminKey').value
+        },
+        body: JSON.stringify({ fileId, step, message })
+      })
+        .then(async res => {
+          const data = await res.json();
+          if (!res.ok) {
+            throw new Error(data.error || 'Failed to update status');
+          }
+          alert('Status updated successfully!');
+          return data;
+        })
+        .catch(error => {
+          alert('Error updating status: ' + error.message);
+          throw error;
+        });
+    }
+
+    function showMessage(message, isError = false) {
+      fileListContainer.innerHTML = `<p style="color: ${isError ? '#c2410c' : '#0f172a'}">${message}</p>`;
+    }
+
+    loadFilesButton.addEventListener('click', () => {
+      const key = adminKeyInput.value.trim();
+      if (!key) {
+        showMessage('Please enter the admin key.', true);
+        return;
+      }
+
+      showMessage('Loading files...');
+      fetch('/admin/files', {
+        headers: { 'x-admin-key': key }
+      })
+        .then(async res => {
+          const data = await res.json();
+          if (!res.ok) {
+            throw new Error(data.error || 'Unable to fetch files');
+          }
+          showFiles(data.files);
+        })
+        .catch(error => {
+          showMessage(error.message, true);
+        });
+    });
+  </script>
+</body>
+</html>
